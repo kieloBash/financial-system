@@ -1,0 +1,72 @@
+# Root level ignores
+.DS_Store
+*.log
+.env
+.env.local
+.env.*.local
+
+# Docker
+docker-compose.override.yml
+
+# Server specific
+server/dist/
+server/node_modules/
+server/coverage/
+server/.nyc_output/
+server/.temp/
+server/.tmp/
+server/*.pid
+server/*.seed
+server/*.pid.lock
+server/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+server/.idea/
+server/.project
+server/.classpath
+server/.c9/
+server/*.launch
+server/.settings/
+server/*.sublime-workspace
+server/prisma/migrations/
+
+# Website specific
+website/node_modules/
+website/.next/
+website/out/
+website/build/
+website/.pnp/
+website.pnp.*
+website/.yarn/*
+!website/.yarn/patches
+!website/.yarn/plugins
+!website/.yarn/releases
+!website/.yarn/versions
+website/coverage/
+website/.vercel/
+website/*.tsbuildinfo
+website/next-env.d.ts
+website/*.pem
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

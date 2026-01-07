@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider     = "prisma-client"
+    output       = "../src/generated/prisma"
+    moduleFormat = "cjs"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+model User {
+    id        String   @id @default(cuid())
+    email     String   @unique
+    name      String?
+    picture   String?
+    password  String?  // Hashed password for email/password auth (null for Google OAuth users)
+    googleId  String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    categories  Category[]
+    expenses    Expense[]
+    quickPrices QuickPrice[]
+
+    @@map("users")
+}
+
+model Category {
+    id        String   @id @default(cuid())
+    userId    String
+    name      String
+    color     String? // Hex color code for UI
+    icon      String? // Icon identifier
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    expenses    Expense[]
+    quickPrices QuickPrice[]
+
+    @@index([userId])
+    @@map("categories")
+}
+
+model Expense {
+    id          String   @id @default(cuid())
+    userId      String
+    categoryId  String
+    amount      Decimal  @db.Decimal(10, 2)
+    description String?
+    date        DateTime @default(now())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+    @@index([userId])
+    @@index([categoryId])
+    @@index([date])
+    @@map("expenses")
+}
+
+model QuickPrice {
+    id          String   @id @default(cuid())
+    userId      String
+    categoryId  String
+    name        String
+    amount      Decimal  @db.Decimal(10, 2)
+    description String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+    @@index([userId])
+    @@index([categoryId])
+    @@map("quick_prices")
+}
