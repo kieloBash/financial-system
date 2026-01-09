@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ExpensesModule } from './expenses/expenses.module';
+import { QuickPricesModule } from './quick-prices/quick-prices.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ExpensesModule } from './expenses/expenses.module';
     AuthModule,
     CategoriesModule,
     ExpensesModule,
+    QuickPricesModule,
   ],
   controllers: [],
   providers: [],
