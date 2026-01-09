@@ -1,4 +1,4 @@
-import type { ApiResponse, ApiErrorResponse } from '../types/api';
+import type { ApiErrorResponse, ApiResponse } from '../types/api';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
 
@@ -34,7 +34,7 @@ class ApiClient {
     options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
     const token = this.getToken();
-    const headers: HeadersInit = {
+    const headers: HeadersInit & { Authorization?: string } = {
       'Content-Type': 'application/json',
       ...options.headers,
     };
