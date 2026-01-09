@@ -1,6 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AppModule } from './app.module';
 
@@ -16,11 +18,17 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
+  // Global exception filter (must be before other global settings)
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   // Global JWT auth guard (all routes protected by default)
   app.useGlobalGuards(new JwtAuthGuard(reflector));
 
-  // Global logging interceptor
-  app.useGlobalInterceptors(new LoggingInterceptor());
+  // Global interceptors (order matters - TransformInterceptor should be last)
+  app.useGlobalInterceptors(
+    new LoggingInterceptor(),
+    new TransformInterceptor(),
+  );
 
   // Global validation pipe
   app.useGlobalPipes(
